@@ -78,6 +78,23 @@ These metrics quantify the effective dimensionality of the reservoir state space
 
 ---
 
+### `generateSimConfig.m` — Shared Smoldyn Configuration Generator
+
+All three benchmark tasks (IPC, Mackey–Glass, NARMA-10) share a single Smoldyn config generator: [generateSimConfig.m](Final%20Code%20Repo%20for%20Original%20Paper/generateSimConfig.m).
+
+**Inputs:** `N_i` (vector of molecule counts per symbol) and `input_time_points` (release timestamps).
+
+**Output:** A Smoldyn script file `MCpointTXsphRX_generated.txt` that encodes the full physical MC channel simulation:
+
+- 3D cubic simulation space with absorbing boundary panels acting as an unbounded free space.
+- **Transmitter:** point source (`unbounded_emitter`) at the origin; molecules are injected at each symbol time via `cmd @` commands, with counts taken directly from `N_i`.
+- **Receiver:** a reflecting inner sphere (the cell surface) surrounded by a thin transmitting shell (the reception volume), positioned at the specified TX–RX distance.
+- **Species:** `Receptor` (surface-bound, immobile), `Messenger` (freely diffusing), `ReceptorActive` (bound complex, surface-bound).
+- **Reactions:** reversible binding `Messenger + Receptor → ReceptorActive` (rate `KON`) and unbinding `ReceptorActive → Messenger + Receptor` (rate `KOFF`); placeholder tokens are substituted by the calling script before each run.
+- **Outputs:** three time-series files — `bitsequence`, `receivedsignal` (molecule count inside the reception shell), and `allmolecules` — sampled every `SAMPLING_PERIOD` steps.
+
+---
+
 ### `IPC_SWEEP/` — Information Processing Capacity
 
 Measures the **Integrated Polynomial Capacity (IPC)** of the MC reservoir using Legendre polynomial basis functions. IPC decomposes total capacity into contributions from different orders of nonlinear computation.
