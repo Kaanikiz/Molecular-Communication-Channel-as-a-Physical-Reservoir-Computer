@@ -1,0 +1,9 @@
+Median dt from file = 0.010000 s
+Expected dt = 0.010000 s
+Usable symbols: 4895
+Average |off-diagonal correlation| = 0.581611
+Participation ratio = 2.8928
+Effective rank = 12.5813
+Effective dimension (participation ratio): 2.8928
+Effective rank: 12.5813
+>> 
